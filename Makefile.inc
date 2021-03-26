@@ -112,6 +112,7 @@ EMFLAGS_ANY	:= \
 
 EMFLAGS_ASMJS   := \
                 $(EMFLAGS_ANY) \
+		-s MEM_INIT_METHOD=0 \
                 -s WASM=0
 
 EMFLAGS_WASM    := \
