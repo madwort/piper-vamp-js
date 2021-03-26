@@ -40,12 +40,22 @@
 # (Using Arch Linux base: installing Emscripten on Ubuntu is a right
 # mess unless you want to recompile the whole thing)
 #
-FROM base/archlinux:2017.06.01
+FROM archlinux:20200908
 MAINTAINER Chris Cannam <cannam@all-day-breakfast.com>
 
 
 # Phase 1. Install prerequisite packages...
 #
+# failed attempt to get 2019 arch working
+# RUN rm -R /etc/pacman.d/gnupg/
+# RUN (If this dir exists)rm -R /root/.gnupg/
+# RUN pacman-key --init && pacman-key --populate
+# RUN pacman -S --help
+# RUN pacman -Sy archlinux-keyring --noconfirm
+# RUN pacman-key --refresh-keys
+# RUN pacman -Sy archlinux-keyring && pacman -Su
+# RUN gpg --refresh-keys
+
 RUN echo 'Server = http://archlinux.mirrors.uk2.net/$repo/os/$arch' > /etc/pacman.d/mirrorlist
 RUN pacman --noconfirm -Syu && \
     pacman --noconfirm -Sy \
@@ -63,13 +73,14 @@ RUN pacman --noconfirm -Syu && \
     mercurial
 RUN rm -rf /var/cache/pacman/pkg/*
 ENV PATH $PATH:/usr/lib/emscripten
+RUN em++ --version
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
 #
 # ... download all needed repos, including this one! ...
 #
 RUN git clone https://github.com/piper-audio/piper
-RUN git clone https://github.com/piper-audio/piper-vamp-js
+RUN git clone https://github.com/madwort/piper-vamp-js
 RUN git clone https://github.com/piper-audio/piper-vamp-cpp
 RUN git clone https://github.com/c4dm/vamp-plugin-sdk
 RUN git clone https://github.com/c4dm/vamp-test-plugin
