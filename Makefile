@@ -1,5 +1,5 @@
 
-all:	prerequisites generator examples-wasm
+all:	prerequisites generator
 
 prerequisites:
 	./bin/check-prerequisites.sh
